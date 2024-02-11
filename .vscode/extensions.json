@@ -1,0 +1,9 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"stkb.rewrap",
+		"richie5um2.vscode-sort-json",
+		"yzhang.markdown-all-in-one"
+	]
+}
