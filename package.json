@@ -1,11 +1,24 @@
 {
-  "name": "ai-update",
-  "module": "main.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+	"name": "ai-update",
+	"type": "module",
+	"module": "src/main.ts",
+	"types": "./dist/main.d.ts",
+	"exports": {
+		"import": {
+			"types": "./dist/main.d.ts",
+			"default": "./dist/main.js"
+		}
+	},
+	"scripts": {
+		"build": "bun ./scripts/build.js",
+		"test:integration": "bun ./integration-tests",
+		"test:unit": "bun test src",
+		"test": "bun test src",
+		"type-check": "tsc"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"bun-plugin-dts": "^0.2.1",
+		"typescript": "^5.3.3"
+	}
 }
