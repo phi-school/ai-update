@@ -1,45 +1,48 @@
 {
-	"name": "ai-update",
-	"type": "module",
-	"module": "src/main.ts",
-	"types": "./dist/main.d.ts",
-	"exports": {
-		"import": {
-			"types": "./dist/main.d.ts",
-			"default": "./dist/main.js"
-		}
-	},
-	"scripts": {
-		"build": "tsup",
-		"test:integration": "bun ./integration-tests",
-		"test:unit": "vitest",
-		"test": "vitest",
-		"type-check": "tsc"
-	},
-	"dependencies": {
-		"@sinclair/typebox": "^0.32.14",
-		"openai": "^4.27.0",
-		"std-env": "^3.7.0",
-		"ts-deepmerge": "^7.0.0"
-	},
-	"devDependencies": {
-		"@phi.school/eslint-config": "^0.3.0",
-		"@phi.school/prettier-config": "^0.2.0",
-		"@types/bun": "latest",
-		"eslint": "^8.56.0",
-		"prettier": "^3.2.5",
-		"tsup": "^8.0.2",
-		"typescript": "^5.3.3",
-		"vite-tsconfig-paths": "^4.3.1",
-		"vitest": "^1.2.2"
-	},
-	"eslintConfig": {
-		"extends": [
-			"@phi.school/eslint-config"
-		],
-		"globals": {
-			"Bun": "readonly"
-		}
-	},
-	"prettier": "@phi.school/prettier-config"
+  "name": "ai-update",
+  "type": "module",
+  "module": "src/main.ts",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    "import": {
+      "types": "./dist/main.d.ts",
+      "default": "./dist/main.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "format": "prettier --write \"**/*.{js,json,md,ts}\"",
+    "lint": "eslint --cache .",
+    "test:integration": "bun ./integration-tests",
+    "test:unit": "vitest",
+    "test": "vitest",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.32.14",
+    "destr": "^2.0.2",
+    "openai": "^4.27.0",
+    "std-env": "^3.7.0",
+    "ts-deepmerge": "^7.0.0"
+  },
+  "devDependencies": {
+    "@phi.school/eslint-config": "^0.3.0",
+    "@phi.school/prettier-config": "^0.2.0",
+    "@types/bun": "latest",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "^4.3.1",
+    "vitest": "^1.2.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@phi.school/eslint-config"
+    ],
+    "globals": {
+      "Bun": "readonly"
+    }
+  },
+  "prettier": "@phi.school/prettier-config"
 }
