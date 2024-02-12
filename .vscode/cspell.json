@@ -1,7 +1,10 @@
 {
   "words": [
+    "deepmerge",
+    "openai",
     "outdir",
     "treeshake",
-    "tsup"
+    "tsup",
+    "typebox"
   ]
 }
