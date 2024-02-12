@@ -28,7 +28,10 @@
 	"eslintConfig": {
 		"extends": [
 			"@phi.school/eslint-config"
-		]
+		],
+		"globals": {
+			"Bun": "readonly"
+		}
 	},
 	"prettier": "@phi.school/prettier-config"
 }
