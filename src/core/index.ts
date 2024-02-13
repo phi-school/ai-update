@@ -1,3 +1,3 @@
-export { handleDataHealing } from './utils'
+export { defaultMergeStrategy, handleDataHealing } from './utils'
 export { taskDescription } from './constants'
-export type { AiUpdateOptions, LanguageModelProvider, Context } from './types'
+export type { AiUpdateOptions, Context, LanguageModelProvider } from './types'

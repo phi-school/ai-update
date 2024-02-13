@@ -3,6 +3,7 @@ import { Check, Value } from '@sinclair/typebox/value'
 import { merge } from 'ts-deepmerge'
 
 import {
+	defaultMergeStrategy,
 	handleDataHealing,
 	type AiUpdateOptions,
 	type LanguageModelProvider,
@@ -50,7 +51,13 @@ export async function aiUpdate<
 		? (merge(defaultOptions, options) as MergedOptions)
 		: (defaultOptions as MergedOptions)
 
-	const { enableDataHealing, maxHealingAttempts } = mergedOptions
+	const {
+		customMergeFunction,
+		enableDataHealing,
+		maxHealingAttempts,
+		returnUpdatedDataOnly,
+	} = mergedOptions
+
 	const { currentData, ExpectedOutputSchema } = context
 
 	const request = provider.configureRequest(context, mergedOptions)
@@ -65,14 +72,23 @@ export async function aiUpdate<
 
 	const isExpectedReturnType = Check(ExpectedOutputSchema, updatedData)
 
+	// TODO Simplify complex conditional
 	if (isExpectedReturnType) {
 		updateState.notify(UpdateState.Success)
 
-		return merge(currentData, updatedData) as Static<T>
+		if (returnUpdatedDataOnly) {
+			return updatedData as Static<T>
+		}
+
+		const finalData = customMergeFunction
+			? customMergeFunction(currentData, updatedData)
+			: defaultMergeStrategy(currentData, updatedData)
+
+		return finalData
 	} else if (enableDataHealing && maxHealingAttempts > 0) {
 		updateState.notify(UpdateState.HealingData)
 
-		const errors = [...Value.Errors(ExpectedOutputSchema, updatedData)] // TODO Why is the type of updatedData never
+		const errors = [...Value.Errors(ExpectedOutputSchema, updatedData)] // TODO Fix `never` return type
 
 		const dataHealingOptions: MergedOptions = {
 			...mergedOptions,
@@ -80,7 +96,7 @@ export async function aiUpdate<
 		}
 		return handleDataHealing(errors, provider, context, dataHealingOptions)
 	} else {
-		// TODO include Value.errors in error message.
+		// TODO Include `Value.errors` in error message
 		const errorMessage =
 			'The LLM response does not conform to the ExpectedOutputSchema.'
 

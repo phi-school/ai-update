@@ -26,7 +26,7 @@ function configureRequest<T extends TObject, K extends TObject>(
 ): CreateNonStreamingChatCompletion {
 	const mergedOptions = options
 		? (merge(defaultOptions, options) as typeof options)
-		: (defaultOptions as typeof options) // TODO fix never return type
+		: (defaultOptions as typeof options) // TODO Fix never return type
 
 	const { ExpectedOutputSchema, currentData, userPrompts } = context
 
