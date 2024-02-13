@@ -1,12 +1,12 @@
-import type { TObject } from '@sinclair/typebox'
+import type { TSchema } from '@sinclair/typebox'
 import type { ValueError } from '@sinclair/typebox/value'
 
 import type { AiUpdateOptions, LanguageModelProvider, Context } from '@/core'
 import { aiUpdate } from '@/main'
 
 export async function handleDataHealing<
-	T extends TObject,
-	K extends TObject,
+	T extends TSchema,
+	K extends TSchema,
 	Request extends object,
 	Options extends object,
 	Response extends object,

@@ -1,4 +1,4 @@
-import type { TObject } from '@sinclair/typebox'
+import type { TSchema } from '@sinclair/typebox'
 
 import type {
 	Request,
@@ -11,7 +11,7 @@ import type {
  * NOTE: Type SerializedRequestObject<T, K> currently assumes that there will be
  * only one UserMessage.
  */
-export function serializeRequest<T extends TObject, K extends TObject>(
+export function serializeRequest<T extends TSchema, K extends TSchema>(
 	request: Request<T, K>,
 ): SerializedRequest<T, K> {
 	return {

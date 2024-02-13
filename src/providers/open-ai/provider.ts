@@ -1,4 +1,4 @@
-import { type TObject, Type } from '@sinclair/typebox'
+import { type TSchema, Type } from '@sinclair/typebox'
 import { safeDestr } from 'destr'
 import { merge } from 'ts-deepmerge'
 
@@ -20,7 +20,7 @@ const defaultOptions: OpenAiOptions = {
 	timeout: 20 * 1000,
 }
 
-function configureRequest<T extends TObject, K extends TObject>(
+function configureRequest<T extends TSchema, K extends TSchema>(
 	context: Context<T, K>,
 	options: AiUpdateOptions & OpenAiOptions,
 ): CreateNonStreamingChatCompletion {
@@ -65,7 +65,7 @@ async function sendRequest(
 	})
 }
 
-function extractUpdatedData<K extends TObject>(response: ChatCompletion): K {
+function extractUpdatedData<K extends TSchema>(response: ChatCompletion): K {
 	return safeDestr<K>(response.choices[0].message.content)
 }
 

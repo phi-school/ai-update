@@ -1,12 +1,12 @@
-import type { TObject } from '@sinclair/typebox'
+import type { TSchema } from '@sinclair/typebox'
 
 import type { Context } from './context'
 
 import type { AiUpdateOptions } from '@/core'
 
 export interface LanguageModelProvider<
-	T extends TObject,
-	K extends TObject,
+	T extends TSchema,
+	K extends TSchema,
 	Request,
 	Options,
 	Response,

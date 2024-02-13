@@ -1,4 +1,4 @@
-import type { Static, TObject } from '@sinclair/typebox'
+import type { Static, TSchema } from '@sinclair/typebox'
 import { Check, Value } from '@sinclair/typebox/value'
 import { merge } from 'ts-deepmerge'
 
@@ -29,8 +29,8 @@ export const aiUpdateState = updateState
 export { OpenAIProvider, type AiUpdateOpenAiOptions } from '@/providers'
 
 export async function aiUpdate<
-	T extends TObject,
-	K extends TObject,
+	T extends TSchema,
+	K extends TSchema,
 	Request extends object,
 	Options extends object,
 	Response extends object,
