@@ -51,12 +51,8 @@ export async function aiUpdate<
 		? (merge(defaultOptions, options) as MergedOptions)
 		: (defaultOptions as MergedOptions)
 
-	const {
-		customMergeFunction,
-		enableDataHealing,
-		maxHealingAttempts,
-		returnUpdatedDataOnly,
-	} = mergedOptions
+	const { customMergeFunction, enableDataHealing, maxHealingAttempts } =
+		mergedOptions
 
 	const { currentData, ExpectedOutputSchema } = context
 
@@ -75,10 +71,6 @@ export async function aiUpdate<
 	// TODO Simplify complex conditional
 	if (isExpectedReturnType) {
 		updateState.notify(UpdateState.Success)
-
-		if (returnUpdatedDataOnly) {
-			return updatedData as Static<T>
-		}
 
 		const finalData = customMergeFunction
 			? customMergeFunction(currentData, updatedData)

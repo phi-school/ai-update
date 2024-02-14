@@ -7,5 +7,4 @@ export type AiUpdateOptions = {
 	enableDataHealing: boolean
 	maxHealingAttempts: number
 	customMergeFunction?: CustomMergeFunction
-	returnUpdatedDataOnly?: boolean // New option
 }
