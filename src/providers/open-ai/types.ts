@@ -1,4 +1,4 @@
-import type { TSchema } from '@sinclair/typebox'
+import type { TObject } from '@sinclair/typebox'
 import OpenAI from 'openai'
 
 import type { Context, AiUpdateOptions } from '@/core'
@@ -16,7 +16,7 @@ export type OpenAiOptions = {
 
 export type AiUpdateOpenAiOptions = AiUpdateOptions & OpenAiOptions
 
-export type Request<T extends TSchema, K extends TSchema> = {
+export type Request<T extends TObject, K extends TObject> = {
 	// messages: [SystemMessage<T, K>, UserMessage]
 	messages: (SystemMessage<T, K> | UserMessage)[]
 	model: 'gpt-3.5-turbo-1106' | 'gpt-4-1106-preview'
@@ -28,7 +28,7 @@ export type UserMessage = {
 	content: string
 }
 
-export type SystemMessage<T extends TSchema, K extends TSchema> = {
+export type SystemMessage<T extends TObject, K extends TObject> = {
 	role: 'system'
 	content: Pick<Context<T, K>, 'currentData' | 'ExpectedOutputSchema'> & {
 		taskDescription: string
@@ -36,13 +36,13 @@ export type SystemMessage<T extends TSchema, K extends TSchema> = {
 }
 
 export type SerializedSystemMessage<
-	T extends TSchema,
-	K extends TSchema,
+	T extends TObject,
+	K extends TObject,
 > = SystemMessage<T, K> & {
 	content: string
 }
 
-export type SerializedRequest<T extends TSchema, K extends TSchema> = Request<
+export type SerializedRequest<T extends TObject, K extends TObject> = Request<
 	T,
 	K
 > & {
