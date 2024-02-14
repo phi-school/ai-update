@@ -12,7 +12,7 @@ import type {
 	UserMessage,
 } from './types'
 
-import { type AiUpdateOptions, type Context, taskDescription } from '@/core'
+import { type Options, type Context, taskDescription } from '@/core'
 
 const defaultOptions: OpenAiOptions = {
 	maxRetries: 2,
@@ -22,7 +22,7 @@ const defaultOptions: OpenAiOptions = {
 
 function configureRequest<T extends TObject, K extends TObject>(
 	context: Context<T, K>,
-	options: AiUpdateOptions & OpenAiOptions,
+	options: Options & OpenAiOptions,
 ): CreateNonStreamingChatCompletion {
 	const mergedOptions = options
 		? (merge(defaultOptions, options) as typeof options)

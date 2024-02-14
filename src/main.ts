@@ -5,7 +5,7 @@ import { merge } from 'ts-deepmerge'
 import {
 	defaultMergeStrategy,
 	handleDataHealing,
-	type AiUpdateOptions,
+	type Options,
 	type LanguageModelProvider,
 	type Context,
 } from '@/core'
@@ -16,7 +16,7 @@ import {
 	type UpdateStateType,
 } from '@/observables'
 
-const defaultOptions: AiUpdateOptions = {
+const defaultOptions: Options = {
 	enableDataHealing: false,
 	maxHealingAttempts: 0,
 }
@@ -26,26 +26,26 @@ export const aiUpdateState = updateState
 
 // TODO Better manage type exports and provider exports. Consider a single file
 // for exported types and add it to the tsup config.
-export { OpenAIProvider, type AiUpdateOpenAiOptions } from '@/providers'
+export { OpenAIProvider, type OpenAiOptions } from '@/providers'
 
 export async function aiUpdate<
 	T extends TObject,
 	K extends TObject,
 	Request extends object,
-	Options extends object,
+	ProviderOptions extends object,
 	Response extends object,
 >({
 	provider,
 	context,
 	options,
 }: {
-	provider: LanguageModelProvider<T, K, Request, Options, Response>
+	provider: LanguageModelProvider<T, K, Request, ProviderOptions, Response>
 	context: Context<T, K>
-	options?: Partial<AiUpdateOptions & Options>
+	options?: Partial<Options & ProviderOptions>
 }): Promise<Static<T>> {
 	updateState.notify(UpdateState.Initializing)
 
-	type MergedOptions = AiUpdateOptions & Options
+	type MergedOptions = Options & ProviderOptions
 
 	const mergedOptions = options
 		? (merge(defaultOptions, options) as MergedOptions)

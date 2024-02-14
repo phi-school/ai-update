@@ -1,20 +1,20 @@
 import type { TObject } from '@sinclair/typebox'
 import type { ValueError } from '@sinclair/typebox/value'
 
-import type { AiUpdateOptions, LanguageModelProvider, Context } from '@/core'
+import type { Options, LanguageModelProvider, Context } from '@/core'
 import { aiUpdate } from '@/main'
 
 export async function handleDataHealing<
 	T extends TObject,
 	K extends TObject,
 	Request extends object,
-	Options extends object,
+	ProviderOptions extends object,
 	Response extends object,
 >(
 	errors: ValueError[],
-	provider: LanguageModelProvider<T, K, Request, Options, Response>,
+	provider: LanguageModelProvider<T, K, Request, ProviderOptions, Response>,
 	context: Context<T, K>,
-	options: AiUpdateOptions & Options,
+	options: Options & ProviderOptions,
 ) {
 	throw new Error('Data healing is not yet implemented.')
 

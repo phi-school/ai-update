@@ -3,7 +3,7 @@ export type CustomMergeFunction = <T>(
 	updatedData: Partial<T>,
 ) => T
 
-export type AiUpdateOptions = {
+export type Options = {
 	enableDataHealing: boolean
 	maxHealingAttempts: number
 	customMergeFunction?: CustomMergeFunction
