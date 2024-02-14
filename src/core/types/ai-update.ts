@@ -1,4 +1,4 @@
-export type CustomMergeFunction = <T extends object>(
+export type CustomMergeFunction = <T>(
 	currentData: T,
 	updatedData: Partial<T>,
 ) => T
