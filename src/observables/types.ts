@@ -19,7 +19,7 @@ type BaseState = {
 }
 
 type SpecificState = {
-	[K in keyof typeof UpdateState]: BaseState & { status: K }
+	[Context in keyof typeof UpdateState]: BaseState & { status: Context }
 }[keyof typeof UpdateState]
 
 type ErrorState = BaseState & { status: 'error'; message: string }

@@ -28,8 +28,8 @@ export const aiUpdateState = updateState
 export { OpenAIProvider, type OpenAiOptions } from '@/providers'
 
 export async function aiUpdate<
-	T extends TObject,
-	K,
+	OutputSchema extends TObject,
+	Context,
 	ProviderOptions extends object,
 	ProviderRequest extends object,
 	ProviderResponse extends object,
@@ -38,10 +38,16 @@ export async function aiUpdate<
 	content,
 	options,
 }: {
-	provider: Provider<T, K, ProviderOptions, ProviderRequest, ProviderResponse>
-	content: Content<T, K>
+	provider: Provider<
+		OutputSchema,
+		Context,
+		ProviderOptions,
+		ProviderRequest,
+		ProviderResponse
+	>
+	content: Content<OutputSchema, Context>
 	options?: Partial<Options & ProviderOptions>
-}): Promise<Static<T>> {
+}): Promise<Static<OutputSchema>> {
 	updateState.notify(UpdateState.Initializing)
 
 	type MergedOptions = Options & ProviderOptions

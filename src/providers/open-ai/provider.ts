@@ -20,8 +20,8 @@ const defaultOptions: OpenAiOptions = {
 	timeout: 20 * 1000,
 }
 
-function configureRequest<T extends TObject, K>(
-	content: Content<T, K>,
+function configureRequest<OutputSchema extends TObject, Context>(
+	content: Content<OutputSchema, Context>,
 	options: Options & OpenAiOptions,
 ): CreateNonStreamingChatCompletion {
 	const mergedOptions = options
@@ -32,7 +32,7 @@ function configureRequest<T extends TObject, K>(
 
 	const { model } = mergedOptions
 
-	const request: ProviderRequest<T, K> = {
+	const request: ProviderRequest<OutputSchema, Context> = {
 		messages: [
 			{
 				role: 'system',
@@ -67,8 +67,8 @@ async function sendRequest(
 	})
 }
 
-function extractUpdatedData<K>(response: ChatCompletion): K {
-	return safeDestr<K>(response.choices[0].message.content)
+function extractUpdatedData<Context>(response: ChatCompletion): Context {
+	return safeDestr<Context>(response.choices[0].message.content)
 }
 
 export const OpenAIProvider = {

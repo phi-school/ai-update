@@ -14,8 +14,8 @@ export type OpenAiOptions = {
 	timeout: number
 }
 
-export type ProviderRequest<T extends TObject, K> = {
-	messages: (SystemMessage<T, K> | UserMessage)[]
+export type ProviderRequest<OutputSchema extends TObject, Context> = {
+	messages: (SystemMessage<OutputSchema, Context> | UserMessage)[]
 	model: 'gpt-3.5-turbo-1106' | 'gpt-4-1106-preview'
 	response_format: Readonly<{ type: 'json_object' }>
 }
@@ -25,20 +25,23 @@ export type UserMessage = {
 	content: string
 }
 
-export type SystemMessage<T extends TObject, K> = {
+export type SystemMessage<OutputSchema extends TObject, Context> = {
 	role: 'system'
-	content: Pick<Content<T, K>, 'context' | 'outputSchema'> & {
+	content: Pick<Content<OutputSchema, Context>, 'context' | 'outputSchema'> & {
 		taskDescription: string
 	}
 }
 
-export type SerializedSystemMessage<T extends TObject, K> = SystemMessage<
-	T,
-	K
-> & {
+export type SerializedSystemMessage<
+	OutputSchema extends TObject,
+	Context,
+> = SystemMessage<OutputSchema, Context> & {
 	content: string
 }
 
-export type SerializedRequest<T extends TObject, K> = ProviderRequest<T, K> & {
-	messages: (SerializedSystemMessage<T, K> | UserMessage)[]
+export type SerializedRequest<
+	OutputSchema extends TObject,
+	Context,
+> = ProviderRequest<OutputSchema, Context> & {
+	messages: (SerializedSystemMessage<OutputSchema, Context> | UserMessage)[]
 }

@@ -1,9 +1,9 @@
-type Listener<T> = (data: T) => void
+type Listener<OutputSchema> = (data: OutputSchema) => void
 
-export function createObservable<T>() {
-	let listeners: Listener<T>[] = []
+export function createObservable<OutputSchema>() {
+	let listeners: Listener<OutputSchema>[] = []
 
-	function subscribe(callback: Listener<T>) {
+	function subscribe(callback: Listener<OutputSchema>) {
 		listeners.push(callback)
 
 		return () => {
@@ -12,7 +12,7 @@ export function createObservable<T>() {
 		}
 	}
 
-	function notify(data: T) {
+	function notify(data: OutputSchema) {
 		listeners.forEach((listener) => listener(data))
 	}
 

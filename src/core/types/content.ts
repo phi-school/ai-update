@@ -1,7 +1,7 @@
 import type { TObject } from '@sinclair/typebox'
 
-export type Content<T extends TObject, K = unknown> = {
-	context: K
-	outputSchema: T
+export type Content<OutputSchema extends TObject, Context = unknown> = {
+	context: Context
+	outputSchema: OutputSchema
 	userPrompts?: string[]
 }

@@ -5,15 +5,21 @@ import type { Options, Provider, Content } from '@/core'
 import { aiUpdate } from '@/main'
 
 export async function handleDataHealing<
-	T extends TObject,
-	K,
+	OutputSchema extends TObject,
+	Context,
 	ProviderOptions extends object,
 	ProviderRequest extends object,
 	ProviderResponse extends object,
 >(
 	errors: ValueError[],
-	provider: Provider<T, K, ProviderOptions, ProviderRequest, ProviderResponse>,
-	content: Content<T, K>,
+	provider: Provider<
+		OutputSchema,
+		Context,
+		ProviderOptions,
+		ProviderRequest,
+		ProviderResponse
+	>,
+	content: Content<OutputSchema, Context>,
 	options: Options & ProviderOptions,
 ) {
 	throw new Error('Data healing is not yet implemented.')
