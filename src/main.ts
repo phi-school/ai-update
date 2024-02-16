@@ -3,11 +3,10 @@ import { Check, Value } from '@sinclair/typebox/value'
 import { merge } from 'ts-deepmerge'
 
 import {
-	defaultMergeStrategy,
 	handleDataHealing,
 	type Options,
-	type LanguageModelProvider,
-	type Context,
+	type Provider,
+	type Content,
 } from '@/core'
 import { SchemaValidationError } from '@/errors'
 import {
@@ -30,17 +29,17 @@ export { OpenAIProvider, type OpenAiOptions } from '@/providers'
 
 export async function aiUpdate<
 	T extends TObject,
-	K extends TObject,
-	Request extends object,
+	K,
 	ProviderOptions extends object,
-	Response extends object,
+	ProviderRequest extends object,
+	ProviderResponse extends object,
 >({
 	provider,
-	context,
+	content,
 	options,
 }: {
-	provider: LanguageModelProvider<T, K, Request, ProviderOptions, Response>
-	context: Context<T, K>
+	provider: Provider<T, K, ProviderOptions, ProviderRequest, ProviderResponse>
+	content: Content<T, K>
 	options?: Partial<Options & ProviderOptions>
 }): Promise<Static<T>> {
 	updateState.notify(UpdateState.Initializing)
@@ -51,12 +50,11 @@ export async function aiUpdate<
 		? (merge(defaultOptions, options) as MergedOptions)
 		: (defaultOptions as MergedOptions)
 
-	const { customMergeFunction, enableDataHealing, maxHealingAttempts } =
-		mergedOptions
+	const { enableDataHealing, maxHealingAttempts } = mergedOptions
 
-	const { currentData, ExpectedOutputSchema } = context
+	const { outputSchema } = content
 
-	const request = provider.configureRequest(context, mergedOptions)
+	const request = provider.configureRequest(content, mergedOptions)
 
 	updateState.notify(UpdateState.SendingRequest)
 
@@ -66,31 +64,27 @@ export async function aiUpdate<
 
 	const updatedData = provider.extractUpdatedData(response)
 
-	const isExpectedReturnType = Check(ExpectedOutputSchema, updatedData)
+	const isExpectedReturnType = Check(outputSchema, updatedData)
 
-	// TODO Simplify complex conditional
 	if (isExpectedReturnType) {
 		updateState.notify(UpdateState.Success)
 
-		const finalData = customMergeFunction
-			? customMergeFunction(currentData, updatedData)
-			: defaultMergeStrategy(currentData, updatedData)
-
-		return finalData
+		// TODO filter out extraneous properties
+		return updatedData
 	} else if (enableDataHealing && maxHealingAttempts > 0) {
 		updateState.notify(UpdateState.HealingData)
 
-		const errors = [...Value.Errors(ExpectedOutputSchema, updatedData)] // TODO Fix `never` return type
+		const errors = [...Value.Errors(outputSchema, updatedData)] // TODO Fix `never` return type
 
 		const dataHealingOptions: MergedOptions = {
 			...mergedOptions,
 			maxHealingAttempts: maxHealingAttempts - 1,
 		}
-		return handleDataHealing(errors, provider, context, dataHealingOptions)
+		return handleDataHealing(errors, provider, content, dataHealingOptions)
 	} else {
 		// TODO Include `Value.errors` in error message
 		const errorMessage =
-			'The LLM response does not conform to the ExpectedOutputSchema.'
+			'The LLM response does not conform to the outputSchema.'
 
 		updateState.notify({ ...UpdateState.Error, message: errorMessage })
 

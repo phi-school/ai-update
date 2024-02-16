@@ -1,3 +1,3 @@
 export type { Options } from './ai-update'
-export type { LanguageModelProvider } from './language-model-provider'
-export type { Context } from './context'
+export type { Provider } from './provider'
+export type { Content } from './content'

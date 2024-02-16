@@ -1,19 +1,19 @@
 import type { TObject } from '@sinclair/typebox'
 import type { ValueError } from '@sinclair/typebox/value'
 
-import type { Options, LanguageModelProvider, Context } from '@/core'
+import type { Options, Provider, Content } from '@/core'
 import { aiUpdate } from '@/main'
 
 export async function handleDataHealing<
 	T extends TObject,
-	K extends TObject,
-	Request extends object,
+	K,
 	ProviderOptions extends object,
-	Response extends object,
+	ProviderRequest extends object,
+	ProviderResponse extends object,
 >(
 	errors: ValueError[],
-	provider: LanguageModelProvider<T, K, Request, ProviderOptions, Response>,
-	context: Context<T, K>,
+	provider: Provider<T, K, ProviderOptions, ProviderRequest, ProviderResponse>,
+	content: Content<T, K>,
 	options: Options & ProviderOptions,
 ) {
 	throw new Error('Data healing is not yet implemented.')
@@ -22,12 +22,12 @@ export async function handleDataHealing<
 	// Modify the provider config based on the errors
 	// For instance, appending error information to the user prompt
 	// or changing the system content in some way.
-	// const { userPrompt } = context
+	// const { userPrompt } = content
 
 	// Recursively call aiUpdate with the modified configuration
 	return aiUpdate({
 		provider,
-		context,
+		content,
 		options,
 	})
 }

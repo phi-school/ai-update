@@ -6,13 +6,13 @@ import { openaiClient } from './client'
 import { serializeRequest } from './serialize-request'
 import type {
 	OpenAiOptions,
-	Request,
+	ProviderRequest,
 	CreateNonStreamingChatCompletion,
 	ChatCompletion,
 	UserMessage,
 } from './types'
 
-import { type Options, type Context, taskDescription } from '@/core'
+import { type Options, type Content, taskDescription } from '@/core'
 
 const defaultOptions: OpenAiOptions = {
 	maxRetries: 2,
@@ -20,31 +20,33 @@ const defaultOptions: OpenAiOptions = {
 	timeout: 20 * 1000,
 }
 
-function configureRequest<T extends TObject, K extends TObject>(
-	context: Context<T, K>,
+function configureRequest<T extends TObject, K>(
+	content: Content<T, K>,
 	options: Options & OpenAiOptions,
 ): CreateNonStreamingChatCompletion {
 	const mergedOptions = options
 		? (merge(defaultOptions, options) as typeof options)
 		: (defaultOptions as typeof options) // TODO Fix never return type
 
-	const { ExpectedOutputSchema, currentData, userPrompts } = context
+	const { context, outputSchema, userPrompts } = content
 
 	const { model } = mergedOptions
 
-	const request: Request<T, K> = {
+	const request: ProviderRequest<T, K> = {
 		messages: [
 			{
 				role: 'system',
 				content: {
 					taskDescription,
-					currentData,
-					ExpectedOutputSchema: Type.Strict(ExpectedOutputSchema),
+					context,
+					outputSchema: Type.Strict(outputSchema),
 				},
 			},
-			...userPrompts.map(
-				(prompt) => ({ role: 'user', content: prompt }) as UserMessage,
-			),
+			...(userPrompts
+				? userPrompts.map(
+						(prompt) => ({ role: 'user', content: prompt }) as UserMessage,
+					)
+				: []),
 		],
 		model,
 		response_format: { type: 'json_object' },
@@ -65,7 +67,7 @@ async function sendRequest(
 	})
 }
 
-function extractUpdatedData<K extends TObject>(response: ChatCompletion): K {
+function extractUpdatedData<K>(response: ChatCompletion): K {
 	return safeDestr<K>(response.choices[0].message.content)
 }
 

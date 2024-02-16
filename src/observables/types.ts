@@ -6,7 +6,7 @@ export const UpdateState = {
 	},
 	ResponseReceived: {
 		status: 'ResponseReceived',
-		message: 'Response received',
+		message: 'ProviderResponse received',
 	},
 	HealingData: { status: 'HealingData', message: 'Attempting to heal data' },
 	Success: { status: 'Success', message: 'Process completed successfully' },
