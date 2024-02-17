@@ -55,9 +55,11 @@ function configureRequest<OutputSchema extends TObject, Context>(
 
 async function sendRequest(
 	requestObject: CreateNonStreamingChatCompletion,
-	options: OpenAiOptions,
+	options: Options & OpenAiOptions,
 ): Promise<ChatCompletion> {
-	const { maxRetries, timeout } = options
+	const mergedOptions = merge(defaultOptions, options)
+
+	const { maxRetries, timeout } = mergedOptions
 
 	return openaiClient.chat.completions.create(requestObject, {
 		maxRetries,

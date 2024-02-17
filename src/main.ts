@@ -36,7 +36,7 @@ export async function aiUpdate<
 >({
 	provider,
 	content,
-	options,
+	options = {},
 }: {
 	provider: Provider<
 		OutputSchema,
@@ -50,11 +50,8 @@ export async function aiUpdate<
 }): Promise<Static<OutputSchema>> {
 	updateState.notify(UpdateState.Initializing)
 
-	type MergedOptions = Options & ProviderOptions
-
-	const mergedOptions = options
-		? (merge(defaultOptions, options) as MergedOptions)
-		: (defaultOptions as MergedOptions)
+	const mergedOptions = merge(defaultOptions, options) as Options &
+		ProviderOptions
 
 	const { enableDataHealing, maxHealingAttempts } = mergedOptions
 
@@ -82,7 +79,7 @@ export async function aiUpdate<
 
 		const errors = [...Value.Errors(outputSchema, updatedData)] // TODO Fix `never` return type
 
-		const dataHealingOptions: MergedOptions = {
+		const dataHealingOptions = {
 			...mergedOptions,
 			maxHealingAttempts: maxHealingAttempts - 1,
 		}
