@@ -12,13 +12,7 @@ export async function handleDataHealing<
 	ProviderResponse extends object,
 >(
 	errors: ValueError[],
-	provider: Provider<
-		OutputSchema,
-		Context,
-		ProviderOptions,
-		ProviderRequest,
-		ProviderResponse
-	>,
+	provider: Provider<ProviderOptions, ProviderRequest, ProviderResponse>,
 	content: Content<OutputSchema, Context>,
 	options: Options & ProviderOptions,
 ) {

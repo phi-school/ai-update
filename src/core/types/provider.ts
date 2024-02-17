@@ -4,15 +4,9 @@ import type { Content } from './content'
 
 import type { Options } from '@/core'
 
-export interface Provider<
-	OutputSchema extends TObject,
-	Context,
-	ProviderOptions,
-	ProviderRequest,
-	ProviderResponse,
-> {
+export interface Provider<ProviderOptions, ProviderRequest, ProviderResponse> {
 	configureRequest: (
-		content: Content<OutputSchema, Context>,
+		content: Content<TObject>,
 		options: Options & ProviderOptions,
 	) => ProviderRequest
 
@@ -21,5 +15,5 @@ export interface Provider<
 		options: Options & ProviderOptions,
 	) => Promise<ProviderResponse>
 
-	extractUpdatedData: (response: ProviderResponse) => Context
+	extractUpdatedData: (response: ProviderResponse) => unknown
 }

@@ -38,13 +38,7 @@ export async function aiUpdate<
 	content,
 	options = {},
 }: {
-	provider: Provider<
-		OutputSchema,
-		Context,
-		ProviderOptions,
-		ProviderRequest,
-		ProviderResponse
-	>
+	provider: Provider<ProviderOptions, ProviderRequest, ProviderResponse>
 	content: Content<OutputSchema, Context>
 	options?: Partial<Options & ProviderOptions>
 }): Promise<Static<OutputSchema>> {
