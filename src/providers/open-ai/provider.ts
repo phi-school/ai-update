@@ -16,17 +16,15 @@ import { type Options, type Content, taskDescription } from '@/core'
 
 const defaultOptions: OpenAiOptions = {
 	maxRetries: 2,
-	model: 'gpt-3.5-turbo-1106',
-	timeout: 20 * 1000,
+	model: 'gpt-3.5-turbo-0125',
+	timeout: 10 * 1000, // 10 seconds
 }
 
 function configureRequest<OutputSchema extends TObject, Context>(
 	content: Content<OutputSchema, Context>,
 	options: Options & OpenAiOptions,
 ): CreateNonStreamingChatCompletion {
-	const mergedOptions = options
-		? (merge(defaultOptions, options) as typeof options)
-		: (defaultOptions as typeof options) // TODO Fix never return type
+	const mergedOptions = merge(defaultOptions, options)
 
 	const { context, outputSchema, userPrompts } = content
 

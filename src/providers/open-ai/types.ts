@@ -10,13 +10,13 @@ export type ChatCompletion = OpenAI.Chat.Completions.ChatCompletion
 
 export type OpenAiOptions = {
 	maxRetries: number
-	model: 'gpt-3.5-turbo-1106' | 'gpt-4-1106-preview'
+	model: 'gpt-3.5-turbo-0125' | 'gpt-4-0125-preview'
 	timeout: number
 }
 
 export type ProviderRequest<OutputSchema extends TObject, Context> = {
 	messages: (SystemMessage<OutputSchema, Context> | UserMessage)[]
-	model: 'gpt-3.5-turbo-1106' | 'gpt-4-1106-preview'
+	model: 'gpt-3.5-turbo-0125' | 'gpt-4-0125-preview'
 	response_format: Readonly<{ type: 'json_object' }>
 }
 

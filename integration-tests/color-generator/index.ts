@@ -34,7 +34,7 @@ export async function generateColor(): Promise<Color> {
 			enableDataHealing: false,
 			maxHealingAttempts: 0,
 			maxRetries: 2,
-			model: 'gpt-3.5-turbo-1106',
+			model: 'gpt-3.5-turbo-0125',
 			timeout: 10 * 1000, // 10 seconds
 		},
 	})
